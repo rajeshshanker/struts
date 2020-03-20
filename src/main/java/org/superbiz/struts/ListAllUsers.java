@@ -18,10 +18,6 @@
 package org.superbiz.struts;
 
 import java.util.List;
-import java.util.Properties;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 import org.springframework.stereotype.Component;
 
