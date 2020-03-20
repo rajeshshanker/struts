@@ -17,64 +17,72 @@
 */
 package org.superbiz.struts;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import java.util.Properties;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+@Component
 public class AddUser {
 
-    private int id;
-    private String firstName;
-    private String lastName;
-    private String errorMessage;
+	private int id;
+	private String firstName;
+	private String lastName;
+	private String errorMessage;
+	private UserService userService;
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public AddUser(final UserService userService) {
+		this.userService = userService;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public String getErrorMessage() {
+		return errorMessage;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
 
-    public String execute() {
+	public int getId() {
+		return id;
+	}
 
-        try {
-            UserService service = null;
-            Properties props = new Properties();
-            props.put(Context.INITIAL_CONTEXT_FACTORY,
-                "org.apache.openejb.core.LocalInitialContextFactory");
-            Context ctx = new InitialContext(props);
-            service = (UserService) ctx.lookup("UserServiceImplLocal");
-            service.add(new User(id, firstName, lastName));
-        } catch (Exception e) {
-            this.errorMessage = e.getMessage();
-            return "failure";
-        }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-        return "success";
-    }
+	@Transactional
+	public String execute() {
+
+		try {
+			/*
+			 * UserService service = null; Properties props = new Properties();
+			 * props.put(Context.INITIAL_CONTEXT_FACTORY,
+			 * "org.apache.openejb.core.LocalInitialContextFactory"); Context ctx = new
+			 * InitialContext(props); service = (UserService)
+			 * ctx.lookup("UserServiceImplLocal");
+			 */
+			userService.add(new User(id, firstName, lastName));
+		} catch (Exception e) {
+			this.errorMessage = e.getMessage();
+			return "failure";
+		}
+
+		return "success";
+	}
 }
