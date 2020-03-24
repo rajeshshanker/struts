@@ -3,6 +3,8 @@
  */
 package org.superbiz.struts;
 
+import java.util.Arrays;
+
 import org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,7 @@ public class Application {
 		FilterRegistrationBean<SiteMeshFilter> registrationBean = new FilterRegistrationBean<SiteMeshFilter>();
 		registrationBean.setFilter(new SiteMeshFilter());
 		registrationBean.addUrlPatterns("/*");
+		logger.info("Site Mesh Filter URLS :" +registrationBean.toString());
 		return registrationBean;
 	}
 
@@ -44,8 +47,9 @@ public class Application {
 		logger.info("Prepare and execute");
 		FilterRegistrationBean<StrutsPrepareAndExecuteFilter> registrationBean = new FilterRegistrationBean<StrutsPrepareAndExecuteFilter>();
 		registrationBean.setFilter(new StrutsPrepareAndExecuteFilter());
-		registrationBean.addUrlPatterns("/", "/addUserForm.action", "/addUser.action", "/findUserForm.action",
-				"/findUser.action", "/listAllUsers.action");
+		registrationBean.setUrlPatterns(Arrays.asList("/", "/addUser.action","/addUserForm.action", "/findUserForm.action",
+				"/findUser.action", "/listAllUsers.action"));
+		logger.info(registrationBean.toString());
 		return registrationBean;
 	}
 
